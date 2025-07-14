@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap/bootstrap@5.3.0-alpha1.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="css/bootstrap/bootstrap-icons@1.10.5.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card i {
+            font-size: 2.2rem;
+            color: #0d6efd;
+        }
+
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 30px 0;
+            text-align: center;
+        }
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s ease, transform 0.3s;
+            background-color: #ffffff;
+        }
+    
+        .feature-card:hover {
+            background-color: #f1f3f5;
+            transform: translateY(-5px);
+        }
+    
+        .feature-card::before,
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            background-color: #0d6efd;
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+    
+        .feature-card::before {
+            width: 0%;
+            height: 2px;
+            top: 0;
+            left: 0;
+        }
+    
+        .feature-card::after {
+            height: 0%;
+            width: 2px;
+            top: 0;
+            right: 0;
+        }
+    
+        .feature-card:hover::before {
+            width: 100%;
+        }
+    
+        .feature-card:hover::after {
+            height: 100%;
+        }
+    
+        .feature-card .card-body {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+    
+        /* Add bottom and left animation with another set of pseudo-elements */
+        .feature-card::before,
+        .feature-card::after,
+        .feature-card .bottom-border,
+        .feature-card .left-border {
+            pointer-events: none;
+        }
+    
+        .feature-card .bottom-border,
+        .feature-card .left-border {
+            content: '';
+            position: absolute;
+            background-color: #0d6efd;
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+    
+        .feature-card .bottom-border {
+            width: 0%;
+            height: 2px;
+            bottom: 0;
+            right: 0;
+        }
+    
+        .feature-card .left-border {
+            height: 0%;
+            width: 2px;
+            bottom: 0;
+            left: 0;
+        }
+    
+        .feature-card:hover .bottom-border {
+            width: 100%;
+        }
+    
+        .feature-card:hover .left-border {
+            height: 100%;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s ease-out;
+            will-change: opacity, transform;
+          }
+          
+          .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+          }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="~{fragments/navbar.html}"></div>
+
+<!-- Hero Section -->
+<section class="hero-section reveal">
+    <div class="container text-center reveal">
+        <!--<div class="ratio ratio-16x9">
+            <video autoplay muted loop playsinline class="w-100 rounded">
+              <source src="/videos/management_employee.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div> -->
+        <h1 class="display-4 fw-bold mb-4">Streamline Your Workforce Management</h1>
+        <p class="lead mb-5">Efficiently manage employee data, track performance, and optimize your HR processes with our comprehensive solution.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="#" class="btn btn-light btn-lg px-4 gap-3">Get Started</a>
+            <a href="#" class="btn btn-outline-light btn-lg px-4">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-2 reveal">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Powerful Features</h2>
+        <p class="lead text-muted">Everything you need to manage your workforce effectively</p>
+    </div>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4 reveal">
+                <div class="card feature-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-person-badge mb-3"></i>
+                        <h5>Employee Onboarding</h5>
+                        <p class="text-muted">Seamlessly add and manage employee data with customizable forms.</p>
+                    </div>
+                    <div class="bottom-border"></div>
+                    <div class="left-border"></div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4 reveal">
+                <div class="card feature-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-search mb-3"></i>
+                        <h5>Smart Directory</h5>
+                    <p class="text-muted">Instantly access and search through detailed employee profiles.</p>
+                    </div>
+                    <div class="bottom-border"></div>
+                    <div class="left-border"></div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4 reveal">
+                <div class="card feature-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-graph-up-arrow mb-3"></i>
+                        <h5>Analytics & Insights</h5>
+                    <p class="text-muted">Visualize performance and engagement metrics across your teams.</p>
+                    </div>
+                    <div class="bottom-border"></div>
+                    <div class="left-border"></div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4 reveal">
+                <div class="card feature-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-gear mb-3"></i>
+                        <h5>Automated Workflows</h5>
+                    <p class="text-muted">Set up approval chains, automated alerts, and role-based access.</p>
+                    </div>
+                    <div class="bottom-border"></div>
+                    <div class="left-border"></div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="container my-2 text-center reveal">
+    <div class="row align-items-center">
+      <!-- Video Column -->
+      <div class="col-md-6 text-center mb-4 mb-md-0">
+        <video autoplay muted loop playsinline class="w-100">
+          <source src="/videos/management_employee.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+  
+      <!-- Text Column -->
+      <div class="col-md-6 text-md-start">
+        <h2 class="display-5 fw-bold mb-4">Ready to Transform With Us?</h2>
+        <p class="lead mb-5">Join thousands of companies who have streamlined their employee management processes.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center justify-content-md-start">
+          <a href="#" class="btn btn-primary btn-lg px-4 gap-3">Sign Up</a>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white reveal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <h5 class="mb-3"><i class="bi bi-people-fill me-2"></i>EmployeeMS</h5>
+                <p>Comprehensive employee management solutions for businesses of all sizes.</p>
+                <div class="mt-4">
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Features</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Pricing</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">About Us</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 mb-4">
+                <h5 class="mb-3">Resources</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Documentation</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Help Center</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Webinars</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Community</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 mb-4">
+                <h5 class="mb-3">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Business Ave, Suite 500</li>
+                    <li class="mb-2"><i class="bi bi-telephone me-2"></i> (555) 123-4567</li>
+                    <li class="mb-2"><i class="bi bi-envelope me-2"></i> info@employeems.com</li>
+                    <li><i class="bi bi-clock me-2"></i> Mon-Fri: 9AM-5PM</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0">&copy; 2023 EmployeeMS. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="#" class="text-white text-decoration-none me-3">Privacy Policy</a>
+                <a href="#" class="text-white text-decoration-none">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS + Popper -->
+<script src="js/popper-core@2.11.6.min.js"></script>
+<script src="js/bootstrap/bootstrap@5.3.0-alpha1.min.js"></script>
+<script th:inline="javascript">
+    function handleScrollReveal() {
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 0;
+    
+          if (isVisible) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active'); // This allows re-trigger on scroll-up
+          }
+        });
+      }
+    
+      window.addEventListener('scroll', handleScrollReveal);
+      window.addEventListener('load', handleScrollReveal);
+  </script>
+</body>
+</html>

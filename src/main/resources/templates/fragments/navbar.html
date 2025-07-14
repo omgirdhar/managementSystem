@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+    <body>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm px-3">
+            <button th:if="${session.currentUser != null}" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <a  th:if="${session.currentUser == null}" class="navbar-brand fw-bold " href="/">EmployeeMS</a>
+            <button th:if="${session.currentUser == null}" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a  th:if="${session.currentUser != null}" class="nav-link ms-auto" 
+            th:href="${session.currentUser.role.name() == 'SUPERADMIN'} ? '#' : '/profile'">
+            <i class="bi bi-person-circle text-white me-1 fs-3"></i></a>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav" th:if="${session.currentUser == null}">
+                <ul class="navbar-nav align-items-center" style="display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;">
+                    <li class="nav-item"><a class="nav-link" href="features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+                    <li class="nav-item"><a class="btn btn-primary" href="/login">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+      </nav>
+    </body>
+</html>

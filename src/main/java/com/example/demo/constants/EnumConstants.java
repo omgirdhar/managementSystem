@@ -2,8 +2,12 @@ package com.example.demo.constants;
 
 public class EnumConstants {
 
+	/* ordinal works with the order of defined fields
+	ex. if active(1), inactive(0) is the order then active holds the value 1 
+	but the order of active is 0, so in db if it is showing 0 for active it is not wrong 
+	cause you put the active on the first place */
     public enum Status{
-        ACTIVE(1), INACTIVE(0);
+    	INACTIVE(0), ACTIVE(1);
 
         private int status;
 

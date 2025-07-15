@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails{
     public CustomUserDetails(EmpUser user){
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.enabled = user.getStatus() == Status.ACTIVE ? true : enabled;
+        this.enabled = user.getStatus() == Status.ACTIVE;
         this.authorities = Arrays.stream(new Role[] {user.getRole()})
                .map(role -> new SimpleGrantedAuthority(role.name()))
                .collect(Collectors.toList());

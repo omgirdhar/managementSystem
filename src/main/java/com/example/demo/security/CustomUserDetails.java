@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.constants.EnumConstants.Role;
 import com.example.demo.constants.EnumConstants.Status;
-import com.example.demo.model.EmpUser;
+import com.example.demo.model.User;
 
 public class CustomUserDetails implements UserDetails{
 
@@ -20,7 +20,7 @@ public class CustomUserDetails implements UserDetails{
     private boolean enabled;
     private List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(EmpUser user){
+    public CustomUserDetails(User user){
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.getStatus() == Status.ACTIVE;

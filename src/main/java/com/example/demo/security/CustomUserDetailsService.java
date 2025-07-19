@@ -9,10 +9,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.PasswordUtil;
 import com.example.demo.constants.ApplicationConstants;
 import com.example.demo.constants.EnumConstants.Role;
-import com.example.demo.model.EmpUser;
-import com.example.demo.service.EmpUserService;
+import com.example.demo.model.User;
+import com.example.demo.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 public class CustomUserDetailsService implements UserDetailsService{
 
     @Autowired
-    private EmpUserService userService;
+    private UserService userService;
 
     @Autowired
     private HttpSession httpSession;
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         createSuperAdmin();
-        EmpUser user = userService.getUserByEmail(username);
+        User user = userService.getUserByEmail(username);
         if(user == null){
             throw new UsernameNotFoundException("User with username "+username + " not found.");
         }
@@ -37,15 +38,14 @@ public class CustomUserDetailsService implements UserDetailsService{
     }
 
     private void createSuperAdmin(){
-        List<EmpUser> users = userService.findAllUsers();
+        List<User> users = userService.getAllUsers();
         if(users == null || users.isEmpty()){
-            EmpUser user = new EmpUser();
+            User user = new User();
             user.setEmail("superadmin.emp@gmail.com");
             user.setFirstName("Super");
             user.setLastName("Admin");
             user.setRole(Role.SUPERADMIN);
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode("Super@Emp$130"));
+            user.setPassword(PasswordUtil.encodePassword("Super@Emp$130"));
             userService.saveUser(user);
         }
     }

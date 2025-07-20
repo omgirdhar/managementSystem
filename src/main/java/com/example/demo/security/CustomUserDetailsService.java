@@ -39,14 +39,15 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     private void createSuperAdmin(){
         List<User> users = userService.getAllUsers();
-        if(users == null || users.isEmpty()){
-            User user = new User();
-            user.setEmail("superadmin.emp@gmail.com");
-            user.setFirstName("Super");
-            user.setLastName("Admin");
-            user.setRole(Role.SUPERADMIN);
-            user.setPassword(PasswordUtil.encodePassword("Super@Emp$130"));
-            userService.saveUser(user);
+        User user = userService.getUserByEmail("superadmin.emp@gmail.com");
+        if(users == null || users.isEmpty() && user == null){
+            User newUser = new User();
+            newUser.setEmail("superadmin.emp@gmail.com");
+            newUser.setFirstName("Super");
+            newUser.setLastName("Admin");
+            newUser.setRole(Role.SUPERADMIN);
+            newUser.setPassword(PasswordUtil.encodePassword("Super@Emp$130"));
+            userService.saveUser(newUser);
         }
     }
     

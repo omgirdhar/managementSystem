@@ -2,15 +2,17 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.model.Departments;
+import com.example.demo.model.Department;
 
 public interface DepartmentService {
-
-	List<Departments> getDepatmentsByUserId(long id);
 	
-	Departments getDepatmentByUserIdAndName(long id, String name);
+	List<Department> getAllDepartments();
 	
-	Departments saveDepartment(Departments department);
+	Department getDepartmentByName(String name);
 	
-	void deleteDepatmentByUserIdAndName(long id, String name);
+	Department getDepartmentById(long id);
+	
+	Department saveDepartment(Department department);
+	
+	void deleteDepartment(Department department);
 }

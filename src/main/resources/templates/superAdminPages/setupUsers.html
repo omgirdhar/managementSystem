@@ -37,6 +37,10 @@
         padding: 1rem;
       }
     }
+    
+    .custom-checkbox {
+  		border-color: red !important;
+	}
   </style>
 </head>
 <body>
@@ -90,14 +94,6 @@
                 <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.departmentName}">	
               </select>
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Role</label>
-              <select class="form-select" th:field="*{role}" required>
-				  <option value="" selected>Select...</option>
-				  <option th:each="r : ${roles}" th:value="${r}" th:text="${r.name()}">	
-				  </option>
-				</select>
-            </div>
           </div>
           <button type="submit" class="btn btn-primary">Save Employee</button>
         </form>
@@ -127,11 +123,12 @@
 			  <tr th:each="user, iterStat : ${allUsers}">
 			    <td th:text="${iterStat.count}"></td>
 			    <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
-			    <td th:text="${user.department}"></td>
+			    <td th:text="${user.department != null ? user.department.departmentName : 'N/A'}"></td>
 			    <td th:text="${user.email}"></td>
-			    <td>
-			      <span th:classappend="${user.status} ? 'badge bg-success' : 'badge bg-secondary'"
-			            th:text="${user.status} ? 'Active' : 'Inactive'"></span>
+			    <td >
+			    
+			      <span th:classappend="${user.status.name == 'ACTIVE'} ? 'badge bg-success' : 'badge bg-secondary'"
+			            th:text="${user.status.name == 'ACTIVE'} ? 'ACTIVE' : 'INACTIVE'"></span>
 			    </td>
 			    <td>
 			      <button class="btn btn-sm btn-warning text-white me-1 edit-btn" th:attr="data-user-id=${user.id}">
@@ -147,26 +144,6 @@
     </div>
   </div>
 </div>
-<!-- Modals --> <!--
-<div class="modal fade" id="viewModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Employee Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Name:</strong> Jane Doe</p>
-        <p><strong>Email:</strong> jane@example.com</p>
-        <p><strong>Department:</strong> HR</p>
-        <p><strong>Status:</strong> Active</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <div class="modal fade" id="editModal" tabindex="-1">
   <div class="modal-dialog">
@@ -176,39 +153,36 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">First Name</label>
-            <input type="text" class="form-control" id="editFname">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="editLname">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" id="editEmail">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Department</label>
-            <select class="form-select">
-              <option selected>HR</option>
-              <option>IT</option>
-              <option>Finance</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Status</label>
-            <select class="form-select">
-              <option selected>Active</option>
-              <option>Inactive</option>
-            </select>
-          </div>
-        </form>
+        <form id="editUserForm" action="/updateUser" method="post">
+		  <input type="hidden" id="editUserId" name="id" />
+		  <div class="mb-3">
+		    <label class="form-label">First Name</label>
+		    <input type="text" class="form-control" id="editFname" name="firstName">
+		  </div>
+		  <div class="mb-3">
+		    <label class="form-label">Last Name</label>
+		    <input type="text" class="form-control" id="editLname" name="lastName">
+		  </div>
+		  <div class="mb-3">
+		    <label class="form-label">Email</label>
+		    <input type="email" class="form-control" id="editEmail" name="email">
+		  </div>
+		  <div class="mb-3">
+		    <label class="form-label">Department</label>
+		    <select class="form-select" id="editDepartment" name="department.id">
+		      <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.departmentName}"></option>
+		    </select>
+		  </div>
+		  <div class="form-check mb-3">
+			<input type="hidden" name="status" id="statusHidden" value="INACTIVE" />
+			<input type="checkbox" class="form-check-input custom-checkbox" id="editStatusCheckbox">
+			<label class="form-check-label" for="editStatusCheckbox">Active</label>
+		  </div>
+		</form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary">Save Changes</button>
+        <button class="btn btn-primary" onclick="document.getElementById('editUserForm').submit();">Save Changes</button>
       </div>
     </div>
   </div>
@@ -264,15 +238,42 @@
       info:false
     });
 
-    /* $(document).on('click', '.btn-info', function () {
-      const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
-      viewModal.show();
-    }); */
+    let departments = /*[[${departments}]]*/ [];
+    $(document).on('click', '.edit-btn', function () {
+        const userId = $(this).data('user-id');
 
-    $(document).on('click', '.btn-warning', function () {
-      const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-      editModal.show();
+        $.ajax({
+            url: `/getUser/${userId}`,
+            method: 'GET',
+            success: function (data) {
+                $('#editUserId').val(data.id);
+                $('#editFname').val(data.firstName);
+                $('#editLname').val(data.lastName);
+                $('#editEmail').val(data.email);
+                const $deptSelect = $('#editDepartment');
+                $deptSelect.empty();
+                $deptSelect.append(`<option value="">Select...</option>`);
+                departments.forEach(function (dept) {
+                    const selected = dept.id === data.department?.id ? 'selected' : '';
+                    $deptSelect.append(`<option value="${dept.id}" ${selected}>${dept.departmentName}</option>`);
+                });
+                
+                const isActive = data.status === 'ACTIVE';
+                $('#editStatusCheckbox').prop('checked', isActive);
+                $('#statusHidden').val(isActive ? 'ACTIVE' : 'INACTIVE');
+
+                const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+                editModal.show();
+            },
+            error: function (err) {
+                console.error('Failed to fetch user data:', err);
+                $('#modalMessage').text('Failed to load user details.');
+                const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
+                validationModal.show();
+            }
+        });
     });
+
 
     $(document).on('click', '.btn-danger', function () {
       const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -296,6 +297,10 @@
     this.classList.toggle("bi-eye");
     this.classList.toggle("bi-eye-slash");
   });
+  
+  document.getElementById('editStatusCheckbox').addEventListener('change', function () {
+	  document.getElementById('statusHidden').value = this.checked ? 'ACTIVE' : 'INACTIVE';
+	});
 </script>
 </body>
 </html>

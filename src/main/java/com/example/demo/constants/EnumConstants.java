@@ -1,5 +1,8 @@
 package com.example.demo.constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class EnumConstants {
 
 	/* ordinal works with the order of defined fields
@@ -21,7 +24,21 @@ public class EnumConstants {
     }
 
     public enum Role{
-        SUPERADMIN, ADMIN, EMPLOYEE;
+        SUPERADMIN(0), ADMIN(1), EMPLOYEE(2);
+    	
+    	private int role;
+
+        Role(int role){
+            this.role = role; 
+        }
+
+        public int getRole(){
+            return role;
+        }
+        
+        public static List<Role> getAssignableRoles() {
+            return Arrays.asList(ADMIN, EMPLOYEE);
+        }
     }
     
 }

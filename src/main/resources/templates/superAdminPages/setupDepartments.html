@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -64,15 +64,14 @@
     <!-- Add Department Tab -->
     <div class="tab-pane fade show active" id="addDeptTab" role="tabpanel" aria-labelledby="add-tab">
       <div class="card p-4 shadow-sm">
-        <form id="addDepartmentForm">
-          <div class="mb-3">
-            <label for="deptName" class="form-label">Department Name</label>
-            <input type="text" class="form-control" id="deptName" name="deptName" placeholder="Enter department name" required>
-          </div>
-          <div class="mb-3">
-            <label for="hod" class="form-label">Head of Department</label>
-            <input type="text" class="form-control" id="hod" name="hod" placeholder="Enter HOD name" required>
-          </div>
+        <form id="addDepartmentForm" action="/createDepartment" method="post">
+        <input name="userId" th:value="${session.currentUser.id}" hidden>
+          <div class="row mb-3">
+	          <div class="col-md-6">
+	          <label for="deptName" class="form-label">Department Name</label>
+	            <input type="text" class="form-control" id="deptName" name="departmentName" minlength="2" placeholder="Enter Department Name" required>
+	          </div>
+		  </div>
           <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Save Department</button>
         </form>
       </div>
@@ -86,86 +85,21 @@
             <tr>
               <th>#</th>
               <th>Department Name</th>
-              <th>Head of Department</th>
               <th>Total Employees</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Human Resources</td>
-              <td>Jane Doe</td>
-              <td>12</td>
-              <td>
-                <button class="btn btn-sm btn-warning text-white me-1"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Finance</td>
-              <td>John Smith</td>
-              <td>8</td>
-              <td>
-                <button class="btn btn-sm btn-warning text-white me-1"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>IT Department</td>
-              <td>Emily Johnson</td>
-              <td>15</td>
-              <td>
-                <button class="btn btn-sm btn-warning text-white me-1"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
+			  <tr th:each="dept, iterStat : ${departments}">
+			    <td th:text="${iterStat.count}">1</td>
+			    <td th:text="${dept.departmentName}"></td>
+			    <td th:text="NA"></td>
+			    <td>
+			      <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+			    </td>
+			  </tr>
+			</tbody>
         </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="editModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Employee</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-control" value="Jane Doe">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" value="jane@example.com">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Department</label>
-            <select class="form-select">
-              <option selected>HR</option>
-              <option>IT</option>
-              <option>Finance</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Status</label>
-            <select class="form-select">
-              <option selected>Active</option>
-              <option>Inactive</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary">Save Changes</button>
       </div>
     </div>
   </div>
@@ -195,7 +129,7 @@
 <script src="js/dataTables/jquery.datatables.1.13.6.min.js"></script>
 <script src="js/dataTables/datatables.1.13.6.bootstrap5.min.js"></script>
 
-<script>
+<script th:inline="javascript">
       $(document).ready(function () {
         $('#departmentTable').DataTable({
           responsive: true,
@@ -204,15 +138,15 @@
           info : false
         });
     
-        $(document).on('click', '.btn-warning', function () {
-          const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-          editModal.show();
-        });
-    
         $(document).on('click', '.btn-danger', function () {
           const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
           deleteModal.show();
         });
+        
+        let msg = /*[[${msg}]]*/null;
+    	if (msg != null) {
+    		alert(msg);
+    	}
       });
 </script>
 </body>

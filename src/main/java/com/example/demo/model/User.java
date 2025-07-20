@@ -20,7 +20,7 @@ import java.util.Date;
 
 @Entity
 @Data
-public class EmpUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +35,15 @@ public class EmpUser {
 
     private String password;
     
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
     @Enumerated(EnumType.ORDINAL)
     private Status status = Status.ACTIVE;
+    
+    private String department;
+    
+    private boolean deleted;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

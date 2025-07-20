@@ -10,8 +10,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PostPersist;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
@@ -36,30 +38,31 @@ public class User {
     private String password;
     
     @Enumerated(EnumType.ORDINAL)
-    private Role role;
+    private Role role = Role.EMPLOYEE;
 
     @Enumerated(EnumType.ORDINAL)
     private Status status = Status.ACTIVE;
     
-    private String department;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
     
     private boolean deleted;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdOn;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date updatedOn;
 
     @PrePersist
-    protected void onCreate(){
-        this.createdOn = new Date();
+    protected void onCreate() {
+        createdOn = new Date();
+        updatedOn = new Date();
     }
 
-    @PostPersist
-    protected void onUpdate(){
-        this.updatedOn = new Date();
+    @PreUpdate
+    protected void onUpdate() {
+        updatedOn = new Date();
     }
 }

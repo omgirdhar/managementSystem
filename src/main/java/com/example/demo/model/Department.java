@@ -2,37 +2,40 @@ package com.example.demo.model;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @Entity
 @Data
-public class Departments {
+public class Department {
     
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
 	private String departmentName;
-	
-	private long userId;
-	
-	private boolean deleted;
-	
+				
 	@Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdOn;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedOn;
+
     @PrePersist
-    protected void onCreate(){
-        this.createdOn = new Date();
+    protected void onCreate() {
+        createdOn = new Date();
+        updatedOn = new Date();
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedOn = new Date();
+    }
 }

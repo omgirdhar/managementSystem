@@ -68,6 +68,7 @@ public class DepartmentsController {
     		Department existing = departmentService.getDepartmentById(dto.getId());
             if (existing != null) {
                 existing.setDepartmentName(dto.getDepartmentName());
+                existing.setDepartmentAdmin(dto.getDepartmentAdmin());
                 departmentService.saveDepartment(existing);
                 attrs.addFlashAttribute("msg","Department updated successfully.");
             } else {

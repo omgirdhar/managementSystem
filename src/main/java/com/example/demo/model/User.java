@@ -44,7 +44,7 @@ public class User {
     private Status status = Status.ACTIVE;
     
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id", nullable=false)
     private Department department;
     
     private boolean deleted;

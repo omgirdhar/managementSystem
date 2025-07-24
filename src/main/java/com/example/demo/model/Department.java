@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
@@ -21,6 +23,10 @@ public class Department {
     private Long id;
 	
 	private String departmentName;
+	
+	@OneToOne
+	@JoinColumn(name="user_id")
+	private User departmentAdmin;
 				
 	@Temporal(TemporalType.TIMESTAMP)
     private Date createdOn;
